@@ -15,16 +15,24 @@ const milDecElement = document.getElementById('milDec');
 const milUniElement = document.getElementById('milUni');
 const splitsElement = document.getElementById('splits');
 
+
+
 function printTime() {
-  // ... your code goes here
+  printSeconds();
+  printMinutes();
+  
 }
 
 function printMinutes() {
-  // ... your code goes here
+  minDecElement.textContent = chronometer.computeTwoDigitNumber(chronometer.getMinutes()).charAt(0);
+  minUniElement.textContent = chronometer.computeTwoDigitNumber(chronometer.getMinutes()).charAt(1);
+  
 }
 
-function printSeconds() {
-  // ... your code goes here
+function printSeconds(){
+  secDecElement.textContent = chronometer.computeTwoDigitNumber(chronometer.getSeconds()).charAt(0);
+  secUniElement.textContent = chronometer.computeTwoDigitNumber(chronometer.getSeconds()).charAt(1);
+  
 }
 
 // ==> BONUS
@@ -33,7 +41,8 @@ function printMilliseconds() {
 }
 
 function printSplit() {
-  // ... your code goes here
+  currentTime = chronometer.split()
+  splitsElement.innerHTML += `<li> ${currentTime} </li>`
 }
 
 function clearSplits() {
@@ -60,24 +69,35 @@ function setResetBtn() {
 btnLeftElement.addEventListener('click', () => {
   if(btnLeftElement.classList.contains("start")){
    chronometer.start();
+   var t = setInterval(this.printTime,1000);
    btnLeftElement.classList.replace("start","stop")
+   btnRightElement.classList.replace("reset","split")
+   btnRightElement.textContent = "SPLIT"
    btnLeftElement.textContent = "STOP"
+   
   }else{
     chronometer.stop();
     btnLeftElement.classList.replace("stop","start")
+    btnRightElement.classList.replace("split","reset")
+    btnRightElement.textContent = "RESET"
     btnLeftElement.textContent = "START"
   }
+
+  
 });
 
 // Reset/Split Button
 btnRightElement.addEventListener('click', () => {
   if (btnRightElement.classList.contains("reset")) {
     chronometer.reset();
-    btnRightElement.classList.replace("reset","split")
-    btnRightElement.textContent = "SPLIT"
+    splitsElement.innerHTML = "";
+    
   }else{
     chronometer.split();
-    btnRightElement.classList.replace("split","reset")
-    btnRightElement.textContent = "RESET"
+    this.printSplit();
+    
+    
   }
 });
+
+
